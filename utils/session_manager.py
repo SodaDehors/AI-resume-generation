@@ -1,5 +1,6 @@
 """Session management helpers for resume data."""
 
+import os
 from flask import session
 
 
@@ -111,8 +112,25 @@ def set_selected_template(template: str) -> None:
 
 
 def get_ai_config() -> dict:
-    """Get AI provider and API key from session."""
+    """Get AI provider and API key from session, with env var fallback."""
+    provider = session.get('ai_provider', 'deepseek')
+    api_key = session.get('api_key', '')
+
+    # Fallback to environment variables if session has no key
+    if not api_key:
+        env_key_map = {
+            'deepseek': 'DEEPSEEK_API_KEY',
+            'claude': 'ANTHROPIC_API_KEY',
+            'openai': 'OPENAI_API_KEY',
+        }
+        env_var = env_key_map.get(provider, '')
+        if env_var:
+            api_key = os.getenv(env_var, '')
+
+    if not provider or provider not in ('deepseek', 'claude', 'openai', 'fallback'):
+        provider = 'deepseek'
+
     return {
-        'provider': session.get('ai_provider', 'claude'),
-        'api_key': session.get('api_key', ''),
+        'provider': provider,
+        'api_key': api_key,
     }

@@ -189,6 +189,13 @@
             <div class="spinner"></div>
             <h3>AI正在为您生成简历...</h3>
             <p id="loading-status">正在优化内容，请稍候</p>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <button class="btn btn-outline btn-sm" id="btn-cancel-generate"
+                    onclick="cancelGeneration()" style="margin-top:16px;">
+                ✕ 取消生成
+            </button>
         </div>
     </div>
 </div>

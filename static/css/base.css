@@ -31,6 +31,17 @@
     padding: 0;
 }
 
+/* Focus visible — accessibility */
+:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
 html {
     font-size: 16px;
     scroll-behavior: smooth;
@@ -87,6 +98,29 @@ body {
 
 .nav-link:hover { color: var(--color-primary); }
 
+/* GitHub link in nav */
+.nav-github {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #24292e;
+    color: #fff !important;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.nav-github:hover {
+    background: #1a1f23;
+    color: #fff !important;
+}
+
+.nav-github .github-icon {
+    flex-shrink: 0;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
@@ -110,6 +144,21 @@ body {
 .footer-sub {
     font-size: 0.8rem;
     opacity: 0.7;
+}
+
+.footer-repo {
+    margin-top: 6px;
+    font-size: 0.82rem;
+}
+
+.footer-repo a {
+    color: #00838f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.footer-repo a:hover {
+    text-decoration: underline;
 }
 
 /* ============================================================
@@ -227,6 +276,14 @@ body {
 .form-group input.error,
 .form-group textarea.error {
     border-color: var(--color-danger);
+}
+
+.form-group input.valid {
+    border-color: var(--color-success);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%232e7d32' d='M6.5 12.5L3 9l1.2-1.2 2.3 2.3 5.3-5.3L13 6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 34px;
 }
 
 .form-error {
@@ -400,20 +457,86 @@ body {
     margin-bottom: 16px;
     border-radius: 8px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mini resume previews */
+.mini-resume {
+    width: 140px;
+    padding: 12px;
 }
 
 .classic-preview {
-    background: linear-gradient(90deg, #1a365d 30%, #fff 30%);
+    background: #f0f0f0;
 }
+
+.classic-mini {
+    display: flex;
+    gap: 8px;
+    height: 130px;
+}
+
+.mini-sidebar {
+    width: 32px;
+    background: #1a365d;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.mini-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 8px;
+}
+
+.mini-line {
+    height: 5px;
+    background: #bdbdbd;
+    border-radius: 3px;
+}
+.mini-line.w90 { width: 90%; }
+.mini-line.w85 { width: 85%; }
+.mini-line.w80 { width: 80%; }
+.mini-line.w75 { width: 75%; }
+.mini-line.w70 { width: 70%; }
+.mini-line.w65 { width: 65%; }
+.mini-line.w60 { width: 60%; }
+.mini-line.w50 { width: 50%; }
 
 .modern-preview {
     background: #fff;
     border: 2px solid #e0e0e0;
 }
 
+.modern-mini .mini-bar {
+    width: 100%;
+    height: 8px;
+    background: #00838f;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+
+.modern-mini .mini-card {
+    height: 18px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    margin-top: 4px;
+}
+
 .compact-preview {
     background: #fff;
     border: 1px solid #ccc;
+}
+
+.compact-mini .mini-line {
+    height: 4px;
+    background: #9e9e9e;
+    border-radius: 2px;
 }
 
 .template-card h4 {
@@ -481,6 +604,23 @@ body {
     .step-arrow { display: none; }
     .form-row { flex-direction: column; gap: 0; }
     .hero-title { font-size: 1.8rem; }
+    .hero { padding: 40px 16px; }
+    .nav-links { gap: 8px; }
+    .nav-link { font-size: 0.85rem; }
+    .nav-github { padding: 4px 8px; font-size: 0.8rem; }
+    .nav-github span { display: none; }  /* hide text, keep icon */
+    .loading-content { margin: 0 20px; padding: 28px 20px; }
+}
+
+@media (max-width: 480px) {
+    .hero-features { grid-template-columns: 1fr; }
+    .hero-title { font-size: 1.5rem; }
+    .nav-logo { font-size: 1rem; }
+    .step-item { max-width: 140px; }
+    .step-item h4 { font-size: 0.8rem; }
+    .step-item p { font-size: 0.7rem; }
+    .btn-lg { padding: 12px 24px; font-size: 1rem; }
+    #back-to-top { bottom: 16px; right: 16px; width: 38px; height: 38px; }
 }
 
 /* ============================================================

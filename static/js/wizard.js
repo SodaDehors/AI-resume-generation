@@ -5,6 +5,7 @@
 
 const TOTAL_STEPS = 6;
 let currentStep = 1;
+let _hasUnsavedChanges = false;
 
 // ============================================================
 // Initialization
@@ -12,6 +13,8 @@ let currentStep = 1;
 document.addEventListener('DOMContentLoaded', () => {
     initSkillTagInput();
     initTemplateSelector();
+    initBackToTop();
+    initBeforeUnload();
     updateProgressBar();
     updateNavButtons();
 });
@@ -213,6 +216,7 @@ async function saveCurrentStep() {
     if (currentStep === 6) {
         fields.self_evaluation = document.getElementById('self_evaluation').value.trim();
         fields.career_goal = document.getElementById('career_goal').value.trim();
+        fields.selected_template = getSelectedTemplate();
 
         // Also save AI config
         const provider = document.getElementById('ai-provider').value;
@@ -226,9 +230,10 @@ async function saveCurrentStep() {
 }
 
 // ============================================================
-// Generate Resume (with real progress polling)
+// Generate Resume (with real progress polling + cancel)
 // ============================================================
 let _pollTimer = null;
+let _abortController = null;
 
 async function generateResume() {
     // Validate and save step 6
@@ -238,9 +243,14 @@ async function generateResume() {
     // Show loading overlay
     const overlay = document.getElementById('loading-overlay');
     const statusText = document.getElementById('loading-status');
+    const progressFill = document.getElementById('progress-bar-fill');
+    const cancelBtn = document.getElementById('btn-cancel-generate');
 
     overlay.style.display = 'flex';
     statusText.textContent = '正在连接 AI 服务...';
+    progressFill.style.width = '0%';
+    cancelBtn.style.display = 'inline-flex';
+    _abortController = new AbortController();
 
     // Start polling for real progress
     _pollTimer = setInterval(async () => {
@@ -249,17 +259,21 @@ async function generateResume() {
             const status = await resp.json();
             if (status.progress && status.progress.message) {
                 const pct = status.progress.percent || 0;
-                statusText.textContent = `[${pct}%] ${status.progress.message}`;
+                statusText.textContent = status.progress.message;
+                progressFill.style.width = pct + '%';
             }
         } catch (e) { /* ignore poll errors */ }
-    }, 400);
+    }, 500);
 
     try {
-        const result = await API.generateResume();
+        const result = await API.generateResume(_abortController.signal);
         clearInterval(_pollTimer);
 
         if (result.success) {
+            progressFill.style.width = '100%';
             statusText.textContent = '✅ 简历生成成功！正在跳转...';
+            cancelBtn.style.display = 'none';
+            _hasUnsavedChanges = false;
             setTimeout(() => {
                 window.location.href = result.redirect || '/preview';
             }, 600);
@@ -269,9 +283,26 @@ async function generateResume() {
         }
     } catch (err) {
         clearInterval(_pollTimer);
-        overlay.style.display = 'none';
-        alert('网络错误，请检查服务器连接：' + err.message);
+        if (err.name === 'AbortError') {
+            statusText.textContent = '已取消生成';
+        } else {
+            overlay.style.display = 'none';
+            alert('网络错误，请检查服务器连接：' + err.message);
+        }
     }
+}
+
+function cancelGeneration() {
+    if (_abortController) {
+        _abortController.abort();
+        _abortController = null;
+    }
+    if (_pollTimer) {
+        clearInterval(_pollTimer);
+        _pollTimer = null;
+    }
+    document.getElementById('loading-overlay').style.display = 'none';
+    showToast('已取消生成，可以继续修改');
 }
 
 // ============================================================
@@ -611,6 +642,13 @@ function initTemplateSelector() {
         option.addEventListener('click', function() {
             document.querySelectorAll('.template-option').forEach(o => o.classList.remove('selected'));
             this.classList.add('selected');
+            // Persist template choice immediately
+            const template = this.dataset.template;
+            fetch('/api/save-step', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ step: 6, fields: { selected_template: template } }),
+            }).catch(() => {});
         });
     });
 }
@@ -635,3 +673,70 @@ function selectOptions(options, selectedValue) {
         `<option value="${opt}" ${opt === selectedValue ? 'selected' : ''}>${opt}</option>`
     ).join('');
 }
+
+// ============================================================
+// Back to Top Button
+// ============================================================
+function initBackToTop() {
+    const btn = document.createElement('button');
+    btn.id = 'back-to-top';
+    btn.innerHTML = '↑';
+    btn.title = '回到顶部';
+    btn.style.cssText = `
+        position: fixed; bottom: 28px; right: 28px;
+        width: 44px; height: 44px; border-radius: 50%;
+        background: #00838f; color: #fff; border: none;
+        font-size: 1.3rem; cursor: pointer; z-index: 99;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.3s;
+    `;
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    document.body.appendChild(btn);
+
+    window.addEventListener('scroll', () => {
+        const show = window.scrollY > 400;
+        btn.style.opacity = show ? '1' : '0';
+        btn.style.pointerEvents = show ? 'auto' : 'none';
+    });
+}
+
+// ============================================================
+// BeforeUnload — warn on unsaved changes
+// ============================================================
+function initBeforeUnload() {
+    // Mark dirty on any form input change
+    document.addEventListener('input', () => { _hasUnsavedChanges = true; });
+    document.addEventListener('change', () => { _hasUnsavedChanges = true; });
+
+    window.addEventListener('beforeunload', (e) => {
+        if (_hasUnsavedChanges && !document.getElementById('loading-overlay').style.display.includes('flex')) {
+            e.preventDefault();
+            e.returnValue = '您填写的内容尚未保存，确定要离开吗？';
+            return e.returnValue;
+        }
+    });
+}
+
+// ============================================================
+// Live field validation feedback
+// ============================================================
+document.addEventListener('input', (e) => {
+    const el = e.target;
+    if (!el.closest('#wizard-content')) return;
+
+    // Remove error state on input
+    if (el.classList.contains('error')) {
+        el.classList.remove('error');
+        const errorDiv = el.parentNode.querySelector('.form-error');
+        if (errorDiv) errorDiv.remove();
+    }
+
+    // Add subtle valid indicator for key fields
+    if (['name', 'title', 'phone', 'email'].includes(el.id) && el.value.trim()) {
+        if (el.id === 'name' && el.value.trim().length >= 2) el.classList.add('valid');
+        else if (el.id === 'title' && el.value.trim()) el.classList.add('valid');
+        else if (el.id === 'phone' && /^1[3-9]\d{9}$/.test(el.value.trim())) el.classList.add('valid');
+        else if (el.id === 'email' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())) el.classList.add('valid');
+    }
+});

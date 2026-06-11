@@ -10,6 +10,7 @@ import logging
 
 from flask import (Flask, render_template, request, session,
                    jsonify, redirect, url_for, make_response)
+from flask_session import Session
 
 from config import DevelopmentConfig
 from utils.session_manager import (
@@ -45,6 +46,11 @@ def create_app(config=None):
         app.config.from_object(DevelopmentConfig)
     else:
         app.config.from_object(config)
+
+    # Initialize server-side session (filesystem — survives cookie limits)
+    Session(app)
+    logger.info(f'Session interface: {type(app.session_interface).__name__}')
+    logger.info(f'SESSION_TYPE: {app.config.get("SESSION_TYPE")}')
 
     # Ensure session directory exists
     session_dir = app.config.get('SESSION_FILE_DIR',

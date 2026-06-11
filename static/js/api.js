@@ -17,11 +17,13 @@ const API = {
 
     /**
      * Trigger full resume generation.
+     * @param {AbortSignal} signal — optional abort signal for cancellation
      */
-    async generateResume() {
+    async generateResume(signal = null) {
         const resp = await fetch('/api/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            signal,
         });
         return resp.json();
     },
