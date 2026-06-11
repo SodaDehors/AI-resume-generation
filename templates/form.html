@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}创建简历 - AI简历生成系统{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/wizard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="wizard-container">
+    <!-- Progress Bar -->
+    <div class="wizard-progress">
+        {% set steps = ['基本信息', '教育背景', '工作经历', '技能证书', '项目经验', '设置'] %}
+        {% for step_name in steps %}
+        <div class="progress-step" data-step="{{ loop.index }}">
+            <div class="progress-circle">{{ loop.index }}</div>
+            <span class="progress-label">{{ step_name }}</span>
+        </div>
+        {% if loop.index < 6 %}
+        <div class="progress-line"></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Step Content -->
+    <div class="wizard-content" id="wizard-content">
+        <!-- Quick Action Bar -->
+        <div class="quick-actions">
+            <button class="btn btn-outline btn-sm" onclick="loadSampleData()" title="一键填充示例数据，快速体验完整流程">
+                📥 加载示例数据
+            </button>
+            <span class="quick-hint">快速体验，填充完整示例简历</span>
+        </div>
+        <!-- Step 1: Basic Information -->
+        <div class="step-panel active" data-step="1">
+            <h2 class="step-title">📋 基本信息</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>姓名 <span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="您的姓名" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>求职意向 <span class="required">*</span></label>
+                    <input type="text" id="title" placeholder="如：全栈开发工程师" maxlength="50">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>手机号 <span class="required">*</span></label>
+                    <input type="tel" id="phone" placeholder="11位手机号" maxlength="11">
+                </div>
+                <div class="form-group">
+                    <label>邮箱 <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="your@email.com">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>所在城市</label>
+                    <input type="text" id="city" placeholder="如：北京" maxlength="30">
+                </div>
+                <div class="form-group">
+                    <label>工作年限</label>
+                    <select id="years_experience">
+                        <option value="">请选择</option>
+                        <option value="应届毕业生">应届毕业生</option>
+                        <option value="1-3年">1-3年</option>
+                        <option value="3-5年">3-5年</option>
+                        <option value="5-10年">5-10年</option>
+                        <option value="10年以上">10年以上</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Education -->
+        <div class="step-panel" data-step="2">
+            <h2 class="step-title">🎓 教育背景</h2>
+            <div id="education-list"></div>
+            <button class="btn btn-outline btn-add" onclick="addEducation()">+ 添加教育经历</button>
+        </div>
+
+        <!-- Step 3: Work Experience -->
+        <div class="step-panel" data-step="3">
+            <h2 class="step-title">💼 工作经历</h2>
+            <div id="experience-list"></div>
+            <button class="btn btn-outline btn-add" onclick="addExperience()">+ 添加工作经历</button>
+        </div>
+
+        <!-- Step 4: Skills & Certifications -->
+        <div class="step-panel" data-step="4">
+            <h2 class="step-title">🛠 技能与证书</h2>
+            <div class="form-group">
+                <label>专业技能</label>
+                <div class="tag-input-container">
+                    <div class="tag-list" id="skills-tags"></div>
+                    <input type="text" id="skill-input" class="tag-input"
+                           placeholder="输入技能后按回车添加" maxlength="30">
+                </div>
+                <p class="form-hint">输入技能名称后按 Enter 键添加</p>
+            </div>
+            <div class="form-group">
+                <label>语言能力</label>
+                <div id="languages-list"></div>
+                <button class="btn btn-outline btn-add" onclick="addLanguage()">+ 添加语言</button>
+            </div>
+            <div class="form-group">
+                <label>证书资质</label>
+                <div id="certifications-list"></div>
+                <button class="btn btn-outline btn-add" onclick="addCertification()">+ 添加证书</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Projects -->
+        <div class="step-panel" data-step="5">
+            <h2 class="step-title">🚀 项目经验</h2>
+            <div id="projects-list"></div>
+            <button class="btn btn-outline btn-add" onclick="addProject()">+ 添加项目</button>
+        </div>
+
+        <!-- Step 6: Settings & Self-Evaluation -->
+        <div class="step-panel" data-step="6">
+            <h2 class="step-title">⚙️ 自我评价与设置</h2>
+            <div class="form-group">
+                <label>自我评价</label>
+                <textarea id="self_evaluation" rows="5"
+                          placeholder="简单描述您的个人特质、工作风格和职业规划（AI将为您润色）"
+                          maxlength="2000"></textarea>
+                <p class="form-hint">简要描述即可，AI会自动优化为专业的自我评价</p>
+            </div>
+            <div class="form-group">
+                <label>职业目标 / 目标行业</label>
+                <input type="text" id="career_goal"
+                       placeholder="如：期望在金融科技领域深耕发展" maxlength="100">
+            </div>
+
+            <hr class="section-divider">
+
+            <h3>🤖 AI 设置</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>AI 引擎</label>
+                    <select id="ai-provider">
+                        <option value="claude">Claude (Anthropic)</option>
+                        <option value="deepseek" selected>DeepSeek — 推荐（性价比高）</option>
+                        <option value="openai">GPT (OpenAI)</option>
+                        <option value="fallback">无AI — 使用模板生成</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>API Key（可选）</label>
+                    <input type="password" id="api-key"
+                           placeholder="留空则使用无AI模板模式" maxlength="200">
+                    <p class="form-hint">API Key 仅用于本次会话，不会存储</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>简历模板</label>
+                <div class="template-selector">
+                    <div class="template-option selected" data-template="modern">
+                        <div class="template-thumb modern-thumb">Mod</div>
+                        <span>现代模板</span>
+                    </div>
+                    <div class="template-option" data-template="classic">
+                        <div class="template-thumb classic-thumb">Cls</div>
+                        <span>经典模板</span>
+                    </div>
+                    <div class="template-option" data-template="compact">
+                        <div class="template-thumb compact-thumb">Cpt</div>
+                        <span>极简模板</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="wizard-nav">
+        <button class="btn btn-outline" id="btn-prev" onclick="prevStep()" disabled>← 上一步</button>
+        <span class="step-indicator" id="step-indicator">1 / 6</span>
+        <button class="btn btn-primary" id="btn-next" onclick="nextStep()">下一步 →</button>
+        <button class="btn btn-success" id="btn-generate" onclick="generateResume()"
+                style="display:none;">🚀 生成简历</button>
+    </div>
+
+    <!-- Generation Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display:none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>AI正在为您生成简历...</h3>
+            <p id="loading-status">正在优化内容，请稍候</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/wizard.js') }}"></script>
+{% endblock %}

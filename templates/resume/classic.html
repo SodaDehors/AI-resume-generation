@@ -1,0 +1,155 @@
+{# Classic Resume Template - Two column, navy sidebar #}
+<div class="resume-classic">
+    <!-- Left Sidebar -->
+    <aside class="rc-sidebar">
+        <div class="rc-avatar">
+            {% if resume.photo_data %}
+            <img src="{{ resume.photo_data }}" alt="{{ resume.name }}" class="rc-photo">
+            {% else %}
+            <div class="rc-photo-placeholder">{{ resume.name[:1] }}</div>
+            {% endif %}
+        </div>
+
+        <h2 class="rc-name">{{ resume.name }}</h2>
+        <p class="rc-title-sidebar">{{ resume.title }}</p>
+
+        <!-- Contact -->
+        <div class="rc-sidebar-section">
+            <h3>联系方式</h3>
+            {% if resume.phone %}<p>📱 {{ resume.phone }}</p>{% endif %}
+            {% if resume.email %}<p>📧 {{ resume.email }}</p>{% endif %}
+            {% if resume.city %}<p>📍 {{ resume.city }}</p>{% endif %}
+            {% if resume.years_experience %}<p>💼 {{ resume.years_experience }}</p>{% endif %}
+        </div>
+
+        <!-- Skills -->
+        {% if resume.skill_categories %}
+        <div class="rc-sidebar-section">
+            <h3>专业技能</h3>
+            {% for cat in resume.skill_categories %}
+            <h4 class="rc-skill-cat">{{ cat.name }}</h4>
+            <ul class="rc-skill-list">
+                {% for skill in cat.skills %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </div>
+        {% elif resume.skills %}
+        <div class="rc-sidebar-section">
+            <h3>专业技能</h3>
+            <ul class="rc-skill-list">
+                {% for skill in resume.skills %}
+                <li>{{ skill.name if skill is mapping else skill }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Languages -->
+        {% if resume.languages %}
+        <div class="rc-sidebar-section">
+            <h3>语言能力</h3>
+            <ul class="rc-skill-list">
+                {% for lang in resume.languages %}
+                <li>{{ lang.name }} — {{ lang.level }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Certifications -->
+        {% if resume.certifications %}
+        <div class="rc-sidebar-section">
+            <h3>证书资质</h3>
+            <ul class="rc-skill-list">
+                {% for cert in resume.certifications %}
+                <li>{{ cert.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </aside>
+
+    <!-- Main Content -->
+    <div class="rc-main">
+        <!-- Professional Summary -->
+        {% if resume.summary %}
+        <section class="rc-section">
+            <h2 class="rc-section-title">个人概述</h2>
+            <p class="rc-summary">{{ resume.summary }}</p>
+        </section>
+        {% endif %}
+
+        <!-- Work Experience -->
+        {% if resume.experience %}
+        <section class="rc-section">
+            <h2 class="rc-section-title">工作经历</h2>
+            {% for exp in resume.experience %}
+            <div class="rc-exp-item">
+                <div class="rc-exp-header">
+                    <h3>{{ exp.title }} <span class="rc-exp-company">| {{ exp.company }}</span></h3>
+                    <span class="rc-exp-date">{{ exp.start_date }} — {{ exp.end_date }}</span>
+                </div>
+                {% if exp.bullet_points %}
+                <ul class="rc-bullets">
+                    {% for bullet in exp.bullet_points %}
+                    <li>{{ bullet }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Education -->
+        {% if resume.education %}
+        <section class="rc-section">
+            <h2 class="rc-section-title">教育背景</h2>
+            {% for edu in resume.education %}
+            <div class="rc-edu-item">
+                <h3>{{ edu.school }} <span class="rc-edu-degree">| {{ edu.degree }} · {{ edu.major }}</span></h3>
+                <span class="rc-edu-date">{{ edu.start_date }} — {{ edu.end_date }}</span>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Projects -->
+        {% if resume.projects %}
+        <section class="rc-section">
+            <h2 class="rc-section-title">项目经验</h2>
+            {% for proj in resume.projects %}
+            <div class="rc-proj-item">
+                <div class="rc-proj-header">
+                    <h3>{{ proj.name }}</h3>
+                    <span class="rc-proj-role">{{ proj.role }}</span>
+                </div>
+                {% if proj.technologies %}
+                <p class="rc-proj-tech"><strong>技术栈：</strong>{{ proj.technologies }}</p>
+                {% endif %}
+                {% if proj.description %}
+                <p class="rc-proj-desc">{{ proj.description }}</p>
+                {% endif %}
+                {% if proj.highlights %}
+                <ul class="rc-bullets">
+                    {% for h in proj.highlights %}
+                    <li>{{ h }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Self-Evaluation -->
+        {% if resume.self_evaluation %}
+        <section class="rc-section">
+            <h2 class="rc-section-title">自我评价</h2>
+            <p class="rc-self-eval">{{ resume.self_evaluation }}</p>
+        </section>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,132 @@
+{# Compact Resume Template - ATS optimized, single column, text-only #}
+<div class="resume-compact">
+    <!-- Header -->
+    <header class="rcp-header">
+        <h1 class="rcp-name">{{ resume.name }}</h1>
+        <p class="rcp-contact-line">
+            {% if resume.phone %}{{ resume.phone }} · {% endif %}
+            {% if resume.email %}{{ resume.email }} · {% endif %}
+            {% if resume.city %}{{ resume.city }}{% endif %}
+            {% if resume.years_experience %} · {{ resume.years_experience }}{% endif %}
+        </p>
+        {% if resume.headline %}
+        <p class="rcp-headline">{{ resume.headline }}</p>
+        {% endif %}
+    </header>
+
+    <!-- Professional Summary -->
+    {% if resume.summary %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">个人概述</h2>
+        <p>{{ resume.summary }}</p>
+    </section>
+    {% endif %}
+
+    <!-- Work Experience -->
+    {% if resume.experience %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">工作经历</h2>
+        {% for exp in resume.experience %}
+        <div class="rcp-item">
+            <div class="rcp-item-header">
+                <strong>{{ exp.title }}</strong> — {{ exp.company }}
+                <span class="rcp-date">| {{ exp.start_date }} — {{ exp.end_date }}</span>
+            </div>
+            {% if exp.bullet_points %}
+            <ul class="rcp-bullets">
+                {% for bullet in exp.bullet_points %}
+                <li>{{ bullet }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Education -->
+    {% if resume.education %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">教育背景</h2>
+        {% for edu in resume.education %}
+        <div class="rcp-item">
+            <strong>{{ edu.school }}</strong> — {{ edu.degree }} · {{ edu.major }}
+            <span class="rcp-date">| {{ edu.start_date }} — {{ edu.end_date }}</span>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Skills -->
+    {% if resume.skill_categories %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">专业技能</h2>
+        {% for cat in resume.skill_categories %}
+        <p><strong>{{ cat.name }}：</strong>
+            {{ cat.skills | join('、') }}
+        </p>
+        {% endfor %}
+    </section>
+    {% elif resume.skills %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">专业技能</h2>
+        <p>{{ resume.skills | map(attribute='name') | join('、') if resume.skills[0] is mapping else resume.skills | join('、') }}</p>
+    </section>
+    {% endif %}
+
+    <!-- Projects -->
+    {% if resume.projects %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">项目经验</h2>
+        {% for proj in resume.projects %}
+        <div class="rcp-item">
+            <div class="rcp-item-header">
+                <strong>{{ proj.name }}</strong> — {{ proj.role }}
+            </div>
+            {% if proj.technologies %}
+            <p><strong>技术栈：</strong>{{ proj.technologies }}</p>
+            {% endif %}
+            {% if proj.description %}
+            <p>{{ proj.description }}</p>
+            {% endif %}
+            {% if proj.highlights %}
+            <ul class="rcp-bullets">
+                {% for h in proj.highlights %}
+                <li>{{ h }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Certifications & Languages -->
+    {% if resume.certifications or resume.languages %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">证书与语言</h2>
+        {% if resume.certifications %}
+        <p><strong>证书：</strong>
+            {% for cert in resume.certifications %}
+            {{ cert.name }}{% if not loop.last %}、{% endif %}
+            {% endfor %}
+        </p>
+        {% endif %}
+        {% if resume.languages %}
+        <p><strong>语言：</strong>
+            {% for lang in resume.languages %}
+            {{ lang.name }}（{{ lang.level }}）{% if not loop.last %}、{% endif %}
+            {% endfor %}
+        </p>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <!-- Self-Evaluation -->
+    {% if resume.self_evaluation %}
+    <section class="rcp-section">
+        <h2 class="rcp-section-title">自我评价</h2>
+        <p>{{ resume.self_evaluation }}</p>
+    </section>
+    {% endif %}
+</div>

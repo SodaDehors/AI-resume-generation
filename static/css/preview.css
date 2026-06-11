@@ -1,0 +1,101 @@
+/* ============================================================
+   Preview Page Styles
+   ============================================================ */
+
+.preview-container {
+    padding: 0;
+}
+
+/* Toolbar */
+.preview-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 56px;
+    z-index: 50;
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.toolbar-left h2 {
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.template-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.template-switcher span {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+}
+
+.tpl-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--color-text);
+    background: var(--color-white);
+    transition: all 0.2s;
+}
+
+.tpl-btn:hover { border-color: var(--color-primary); }
+
+.tpl-btn.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+/* Resume Wrapper */
+.resume-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    background: #e8e8e8;
+    min-height: calc(100vh - 120px);
+}
+
+.resume-page {
+    width: 210mm;  /* A4 width */
+    min-height: 297mm; /* A4 height */
+    background: white;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .resume-wrapper {
+        padding: 0;
+    }
+    .resume-page {
+        width: 100%;
+        min-height: auto;
+        box-shadow: none;
+    }
+    .preview-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .toolbar-right {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}

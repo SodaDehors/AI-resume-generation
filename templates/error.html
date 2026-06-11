@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}出错了 - AI简历生成系统{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-content">
+        <div class="error-icon">⚠️</div>
+        <h1>操作遇到问题</h1>
+        <p class="error-message">{{ message }}</p>
+        <div class="error-actions">
+            <a href="/form" class="btn btn-primary">返回表单</a>
+            <a href="/" class="btn btn-outline">回到首页</a>
+        </div>
+        <p class="error-hint">
+            如果问题持续出现，请检查：<br>
+            1. API Key 是否正确配置<br>
+            2. 网络连接是否正常<br>
+            3. 是否已填写必要的个人信息（姓名和求职意向）
+        </p>
+    </div>
+</div>
+{% endblock %}

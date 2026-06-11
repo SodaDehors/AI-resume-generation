@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}预览简历 - AI简历生成系统{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/preview.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/templates/' + template + '.css') }}" id="template-css">
+{% endblock %}
+
+{% block content %}
+<div class="preview-container">
+    <!-- Toolbar -->
+    <div class="preview-toolbar">
+        <div class="toolbar-left">
+            <h2>📄 简历预览</h2>
+            <div class="template-switcher">
+                <span>模板：</span>
+                {% set templates = [
+                    ('modern', '现代'),
+                    ('classic', '经典'),
+                    ('compact', '极简')
+                ] %}
+                {% for tpl_id, tpl_name in templates %}
+                <button onclick="switchTemplate('{{ tpl_id }}')"
+                   class="tpl-btn {% if template == tpl_id %}active{% endif %}"
+                   id="tpl-btn-{{ tpl_id }}">
+                    {{ tpl_name }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="toolbar-right">
+            <a href="/form" class="btn btn-outline">← 返回修改</a>
+            <a href="/download/{{ template }}/pdf" class="btn btn-primary" id="btn-download">📥 下载 PDF</a>
+            <button class="btn btn-outline" onclick="window.print()">🖨 打印</button>
+        </div>
+    </div>
+
+    <!-- Resume Display -->
+    <div class="resume-wrapper">
+        <div class="resume-page" id="resume-page">
+            {% include resume_template %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/preview.js') }}"></script>
+{% endblock %}

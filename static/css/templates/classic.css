@@ -1,0 +1,240 @@
+/* ============================================================
+   Classic Resume Template - Navy sidebar + white main
+   ============================================================ */
+
+.resume-classic {
+    font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    color: #263238;
+    display: flex;
+    min-height: 100%;
+}
+
+/* Sidebar */
+.rc-sidebar {
+    width: 30%;
+    min-width: 170px;
+    background: #1a365d;
+    color: #e8eaf6;
+    padding: 36px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rc-avatar {
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.rc-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #e8eaf6;
+    object-fit: cover;
+}
+
+.rc-photo-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #e8eaf6;
+    background: #2a4a7f;
+    color: #e8eaf6;
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.rc-name {
+    font-size: 1.3rem;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+.rc-title-sidebar {
+    font-size: 0.85rem;
+    text-align: center;
+    color: #90a4ae;
+    border-bottom: 1px solid #3a5077;
+    padding-bottom: 14px;
+}
+
+/* Sidebar Sections */
+.rc-sidebar-section {
+    margin-top: 4px;
+}
+
+.rc-sidebar-section h3 {
+    font-size: 0.9rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #3a5077;
+    padding-bottom: 6px;
+}
+
+.rc-sidebar-section p {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: #cfd8dc;
+}
+
+.rc-skill-cat {
+    font-size: 0.82rem;
+    color: #b0bec5;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.rc-skill-list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 0.85rem;
+    color: #cfd8dc;
+}
+
+.rc-skill-list li {
+    padding: 3px 0;
+}
+
+.rc-skill-list li::before {
+    content: "▸ ";
+    color: #78909c;
+}
+
+/* Main Content */
+.rc-main {
+    flex: 1;
+    padding: 36px 32px;
+}
+
+.rc-section {
+    margin-bottom: 22px;
+}
+
+.rc-section-title {
+    font-size: 1.1rem;
+    color: #1a365d;
+    border-bottom: 2px solid #1a365d;
+    padding-bottom: 5px;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Summary */
+.rc-summary {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: #455a64;
+}
+
+/* Experience */
+.rc-exp-item {
+    margin-bottom: 16px;
+}
+
+.rc-exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+
+.rc-exp-header h3 {
+    font-size: 1rem;
+    color: #263238;
+}
+
+.rc-exp-company { color: #1a365d; font-weight: 600; }
+
+.rc-exp-date {
+    font-size: 0.85rem;
+    color: #90a4ae;
+    white-space: nowrap;
+}
+
+.rc-bullets {
+    padding-left: 20px;
+}
+
+.rc-bullets li {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    line-height: 1.6;
+}
+
+/* Education */
+.rc-edu-item {
+    margin-bottom: 10px;
+}
+
+.rc-edu-item h3 {
+    font-size: 0.95rem;
+    color: #263238;
+}
+
+.rc-edu-degree { color: #546e7a; font-weight: 400; }
+
+.rc-edu-date {
+    font-size: 0.85rem;
+    color: #90a4ae;
+}
+
+/* Projects */
+.rc-proj-item {
+    margin-bottom: 14px;
+}
+
+.rc-proj-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.rc-proj-header h3 { font-size: 0.95rem; }
+
+.rc-proj-role {
+    font-size: 0.85rem;
+    color: #546e7a;
+    font-style: italic;
+}
+
+.rc-proj-tech {
+    font-size: 0.88rem;
+    color: #546e7a;
+    margin-bottom: 4px;
+}
+
+.rc-proj-desc {
+    font-size: 0.9rem;
+    color: #455a64;
+    line-height: 1.7;
+}
+
+/* Self Evaluation */
+.rc-self-eval {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: #455a64;
+}
+
+/* Print */
+@media print {
+    .resume-classic {
+        /* keep flex layout for print */
+    }
+    .rc-sidebar {
+        background: #1a365d !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    @page { size: A4; margin: 0; }
+}

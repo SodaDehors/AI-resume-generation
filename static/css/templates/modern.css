@@ -1,0 +1,254 @@
+/* ============================================================
+   Modern Resume Template - Teal accent, card-based
+   ============================================================ */
+
+.resume-modern {
+    font-family: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    color: #263238;
+    padding: 40px 48px;
+    line-height: 1.7;
+}
+
+/* Header */
+.rm-header {
+    text-align: center;
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 3px solid #00838f;
+}
+
+.rm-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00838f;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+}
+
+.rm-headline {
+    font-size: 1.05rem;
+    color: #546e7a;
+    margin-bottom: 14px;
+}
+
+.rm-contact {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 0.88rem;
+    color: #607d8b;
+}
+
+/* Sections */
+.rm-section {
+    margin-bottom: 24px;
+}
+
+.rm-section-title {
+    font-size: 1.15rem;
+    color: #00838f;
+    border-bottom: 2px solid #e0f7fa;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+}
+
+/* Summary Box */
+.rm-summary-box {
+    background: #e0f7fa;
+    padding: 16px 20px;
+    border-radius: 8px;
+    border-left: 4px solid #00838f;
+    line-height: 1.8;
+}
+
+/* Experience Cards */
+.rm-exp-card {
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+}
+
+.rm-exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.rm-exp-title {
+    font-size: 1rem;
+    color: #263238;
+}
+
+.rm-exp-company {
+    font-size: 0.9rem;
+    color: #00838f;
+    font-weight: 500;
+}
+
+.rm-exp-date {
+    font-size: 0.85rem;
+    color: #90a4ae;
+    white-space: nowrap;
+}
+
+/* Bullet Points */
+.rm-bullets {
+    padding-left: 20px;
+    margin-top: 8px;
+}
+
+.rm-bullets li {
+    margin-bottom: 5px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+/* Education */
+.rm-edu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dotted #e0e0e0;
+}
+
+.rm-edu-item:last-child { border-bottom: none; }
+
+.rm-edu-left h4 {
+    font-size: 0.95rem;
+    color: #263238;
+}
+
+.rm-edu-left p {
+    font-size: 0.88rem;
+    color: #607d8b;
+}
+
+.rm-edu-date {
+    font-size: 0.85rem;
+    color: #90a4ae;
+    white-space: nowrap;
+}
+
+/* Skill Tags */
+.rm-skill-group {
+    margin-bottom: 6px;
+}
+
+.rm-skill-cat {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #455a64;
+}
+
+.rm-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.rm-tag {
+    display: inline-block;
+    background: #e0f7fa;
+    color: #006064;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Projects */
+.rm-project-card {
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.rm-proj-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.rm-proj-name {
+    font-size: 1rem;
+    color: #263238;
+}
+
+.rm-proj-role {
+    font-size: 0.85rem;
+    color: #00838f;
+    background: #e0f7fa;
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
+.rm-proj-tech {
+    font-size: 0.88rem;
+    color: #546e7a;
+    margin-bottom: 6px;
+}
+
+.rm-proj-desc {
+    font-size: 0.9rem;
+    color: #455a64;
+    line-height: 1.7;
+}
+
+/* Two Column */
+.rm-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.rm-sub-title {
+    font-size: 0.9rem;
+    color: #546e7a;
+    margin-bottom: 6px;
+}
+
+.rm-simple-list {
+    padding-left: 18px;
+    font-size: 0.88rem;
+}
+
+.rm-simple-list li { margin-bottom: 3px; }
+
+/* Self Evaluation */
+.rm-self-eval {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: #455a64;
+}
+
+/* Print */
+@media print {
+    .resume-modern {
+        padding: 0;
+    }
+    .rm-exp-card, .rm-project-card {
+        background: transparent;
+        border: none;
+        padding: 10px 0;
+        box-shadow: none;
+    }
+    .rm-summary-box {
+        background: transparent;
+        border-left: 3px solid #333;
+    }
+    .rm-tag {
+        background: transparent;
+        border: 1px solid #999;
+    }
+    @page { size: A4; margin: 18mm; }
+}

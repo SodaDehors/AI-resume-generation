@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}AI简历生成系统 - 首页{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">🤖 AI 简历生成系统</h1>
+        <p class="hero-subtitle">
+            输入您的个人信息，AI 将自动为您生成专业、美观的简历。<br>
+            支持多种模板，一键导出 PDF，让求职更高效。
+        </p>
+
+        <div class="hero-features">
+            <div class="feature-card">
+                <span class="feature-icon">✍️</span>
+                <h3>智能生成</h3>
+                <p>AI 自动润色工作描述，量化成就，优化措辞</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>多套模板</h3>
+                <p>经典、现代、极简三种风格，满足不同场景需求</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📄</span>
+                <h3>PDF 导出</h3>
+                <p>一键生成 A4 排版 PDF，支持浏览器直接打印</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🔒</span>
+                <h3>隐私安全</h3>
+                <p>数据仅保存在本地会话中，不外传不存储</p>
+            </div>
+        </div>
+
+        <div class="hero-actions">
+            <a href="/form" class="btn btn-primary btn-lg">开始创建简历 →</a>
+            <p class="hero-hint">无需注册，6步快速完成 · 支持无API Key使用</p>
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works">
+    <h2 class="section-title">如何使用</h2>
+    <div class="steps-row">
+        <div class="step-item">
+            <div class="step-number">1</div>
+            <h4>填写信息</h4>
+            <p>按步骤填写个人信息、教育背景、工作经历等</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+            <div class="step-number">2</div>
+            <h4>AI 生成</h4>
+            <p>AI 自动优化内容，生成专业的简历描述</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+            <div class="step-number">3</div>
+            <h4>选择模板</h4>
+            <p>从3套精美模板中选择最合适的样式</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+            <div class="step-number">4</div>
+            <h4>导出使用</h4>
+            <p>下载 PDF 或在线打印，直接用于求职</p>
+        </div>
+    </div>
+</section>
+
+<section class="templates-showcase">
+    <h2 class="section-title">三种精美模板</h2>
+    <div class="template-cards">
+        <div class="template-card">
+            <div class="template-preview classic-preview">
+                <div class="preview-bar"></div>
+                <div class="preview-lines"></div>
+            </div>
+            <h4>经典模板 Classic</h4>
+            <p>双栏布局，深蓝侧边栏，适合金融、政府、教育等传统行业</p>
+        </div>
+        <div class="template-card">
+            <div class="template-preview modern-preview">
+                <div class="preview-bar modern"></div>
+                <div class="preview-lines modern"></div>
+            </div>
+            <h4>现代模板 Modern</h4>
+            <p>单栏全宽，青色主题，卡片式布局，适合科技、设计、创业</p>
+        </div>
+        <div class="template-card">
+            <div class="template-preview compact-preview">
+                <div class="preview-lines compact"></div>
+            </div>
+            <h4>极简模板 Compact</h4>
+            <p>纯文字排版，ATS 友好，适合大厂海投和系统筛选</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
