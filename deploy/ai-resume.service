@@ -1,0 +1,29 @@
+[Unit]
+Description=AI Resume Generator (Gunicorn)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/ai-resume
+Environment="PATH=/opt/ai-resume/venv/bin"
+EnvironmentFile=/opt/ai-resume/.env
+ExecStart=/opt/ai-resume/venv/bin/gunicorn wsgi:app \
+    --workers 2 \
+    --bind 127.0.0.1:8000 \
+    --preload \
+    --timeout 120 \
+    --access-logfile /var/log/ai-resume/access.log \
+    --error-logfile /var/log/ai-resume/error.log \
+    --log-level info
+
+# Restart on failure
+Restart=always
+RestartSec=5
+
+# Security
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

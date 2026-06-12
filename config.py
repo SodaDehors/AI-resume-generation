@@ -31,3 +31,14 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
+    TEMPLATES_AUTO_RELOAD = False
+
+    # In production, override SESSION_FILE_DIR to a guaranteed-writable path,
+    # unless the user explicitly sets SESSION_FILE_DIR in .env
+    @property
+    def SESSION_FILE_DIR(self):
+        env_dir = os.getenv('SESSION_FILE_DIR', '')
+        if env_dir:
+            return env_dir
+        # Use /tmp for production (systemd cleans /tmp on reboot)
+        return '/tmp/ai_resume_sessions'
