@@ -146,7 +146,11 @@ def register_routes(app):
         pdf_bytes = generate_pdf(html, css_paths)
 
         if pdf_bytes:
-            filename = f"resume_{resume.get('name', 'output')}_{template}.pdf"
+            # Sanitize filename: remove non-ASCII chars to avoid HTTP header corruption
+            import re
+            safe_name = re.sub(r'[^\x00-\x7F]+', '', resume.get('name', 'output'))
+            safe_name = safe_name.strip().rstrip('.') or 'resume'
+            filename = f"resume_{safe_name}_{template}.pdf"
             response = make_response(pdf_bytes)
             response.headers['Content-Type'] = 'application/pdf'
             response.headers['Content-Disposition'] = (
