@@ -5,10 +5,10 @@
         <h1 class="rm-name">{{ resume.name }}</h1>
         <p class="rm-headline">{{ resume.headline or resume.title }}</p>
         <div class="rm-contact">
-            {% if resume.phone %}<span>📱 {{ resume.phone }}</span>{% endif %}
-            {% if resume.email %}<span>📧 {{ resume.email }}</span>{% endif %}
-            {% if resume.city %}<span>📍 {{ resume.city }}</span>{% endif %}
-            {% if resume.years_experience %}<span>💼 {{ resume.years_experience }}</span>{% endif %}
+            {% if resume.phone %}<span>{{ resume.phone }}</span>{% endif %}
+            {% if resume.email %}<span>{{ resume.email }}</span>{% endif %}
+            {% if resume.city %}<span>{{ resume.city }}</span>{% endif %}
+            {% if resume.years_experience %}<span>{{ resume.years_experience }}</span>{% endif %}
         </div>
     </header>
 
