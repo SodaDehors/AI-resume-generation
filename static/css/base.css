@@ -595,6 +595,71 @@ body {
 }
 
 /* ============================================================
+   Developer Section
+   ============================================================ */
+.developer-section {
+    padding: 60px 24px;
+    background: linear-gradient(135deg, #263238 0%, #37474f 50%, #1a365d 100%);
+    text-align: center;
+}
+
+.developer-card {
+    max-width: 400px;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.dev-avatar {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+}
+
+.dev-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.dev-role {
+    font-size: 0.9rem;
+    color: #80cbc4;
+    margin-bottom: 16px;
+}
+
+.dev-bio {
+    font-size: 0.9rem;
+    color: #b0bec5;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.dev-links {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.dev-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.dev-link:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #80cbc4;
+    color: #80cbc4;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 768px) {

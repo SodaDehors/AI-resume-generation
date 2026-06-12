@@ -1,20 +1,34 @@
 ---
 title: 从零搭建 AI 简历生成系统——Prompt Engineering × LLM 实战
 date: 2026-06-12
-categories: [项目, AI, 全栈]
-tags: [Flask, LLM, Prompt Engineering, DeepSeek, 部署]
+categories:
+  - 项目
+  - AI
+  - 全栈
+tags:
+  - Flask
+  - LLM
+  - Prompt Engineering
+  - DeepSeek
+  - 部署
 description: 机器学习课程项目：基于大语言模型的智能简历生成系统。支持 3 套模板、多 AI 引擎切换、规则引擎 Fallback，已部署至阿里云轻量服务器。
+slug: cong-ling-da-jian-ai-jian-li-sheng-cheng-xi-tong----prompt-engineering-x-llm-shi-zhan
+cover: ""
+halo:
+  site: http://47.99.135.194:8090
+  name: afde574a-1c1d-4979-9215-280f79b69b83
+  publish: false
 ---
 
 ## 为什么做这个项目
 
 写简历大概是每个求职者都逃不掉的事。你有没有这种感觉——明明做了很多事，落到纸上就是"负责 XX 工作"八个字，干巴巴的。HR 看 5 秒就扔一边了。
 
-恰逢机器学习课程要求交一个大作业，我就想：**能不能让 LLM 来帮我写简历？** 不是简单地把文字丢给 ChatGPT 那种，而是做一个真正能**引导用户填写信息 → AI 分模块优化 → 多模板渲染输出**的完整系统。
+恰逢机器学习课程要求交一个大作业😀，我就想：**能不能让 LLM 来帮我写简历？** 不是简单地把文字丢给 ChatGPT 那种，而是做一个真正能**引导用户填写信息 → AI 分模块优化 → 多模板渲染输出**的完整系统。
 
 ## 最终效果
 
-> 🔗 在线体验：[airesume.sodadengsl.cn](http://airesume.sodadengsl.cn)（即将上线）
+> 🔗 在线体验：[airesume.sodadengsl.cn](http://airesume.sodadengsl.cn)
 > 📦 GitHub：[github.com/SodaDehors/AI-resume-generation](https://github.com/SodaDehors/AI-resume-generation)
 
 ### 核心功能
@@ -164,7 +178,7 @@ Session(app)  # 这句话救了命
 
 ## 总结与后续计划
 
-这个项目是我第一次从 Prompt 设计、LLM 调用、前端交互到生产部署全栈独立完成。收获最大的是——
+这个项目从 Prompt 设计、LLM 调用、前端交互到生产部署全栈独立完成。收获最大的是——
 
 1. **Prompt Engineering 不是玄学**：角色设定 + 结构化约束 + 温度调优的组合拳行之有效
 2. **生产部署要考虑的远比开发多**：内存优化、Session 存储、防火墙、反向代理超时……
