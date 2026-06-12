@@ -365,48 +365,17 @@ body {
 
 /* Developer badge in hero */
 .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(0,0,0,0.06);
-    padding: 8px 20px;
-    border-radius: 30px;
-    margin-bottom: 24px;
+    display: inline-block;
+    background: rgba(0,0,0,0.05);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #546e7a;
+    margin-bottom: 20px;
 }
 
-.badge-avatar {
-    font-size: 1.6rem;
-}
-
-.badge-info {
-    font-size: 0.92rem;
-    color: #37474f;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.badge-links {
-    display: flex;
-    gap: 6px;
-}
-
-.badge-links a {
-    color: #00838f;
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 500;
-    padding: 2px 10px;
-    border: 1px solid #00838f;
-    border-radius: 12px;
-    transition: all 0.2s;
-}
-
-.badge-links a:hover {
-    background: #00838f;
-    color: #fff;
+.hero-badge strong {
+    color: #263238;
 }
 
 .hero-actions { margin-top: 16px; }
