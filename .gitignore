@@ -29,6 +29,9 @@ Thumbs.db
 *.pem
 cookies.txt
 
+# Obsidian
+.obsidian/
+
 # Temporary files
 *.tmp
 *.log
