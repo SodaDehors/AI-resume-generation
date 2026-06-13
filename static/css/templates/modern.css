@@ -18,6 +18,17 @@
     border-bottom: 1px solid #FFE01B;
 }
 
+.rm-photo-wrap {
+    margin-bottom: 14px;
+}
+.rm-photo {
+    width: 90px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 0;
+    border: 1px solid #FFE01B;
+}
+
 .rm-name {
     font-size: 2rem;
     font-weight: 700;

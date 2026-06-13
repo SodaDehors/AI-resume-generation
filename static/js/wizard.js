@@ -6,6 +6,7 @@
 const TOTAL_STEPS = 6;
 let currentStep = 1;
 let _hasUnsavedChanges = false;
+let _photoData = '';  // base64 photo data
 
 // ============================================================
 // Initialization
@@ -15,9 +16,94 @@ document.addEventListener('DOMContentLoaded', () => {
     initTemplateSelector();
     initBackToTop();
     initBeforeUnload();
+    initPhotoUpload();
     updateProgressBar();
     updateNavButtons();
 });
+
+// ============================================================
+// Photo Upload (Step 1, optional)
+// ============================================================
+function initPhotoUpload() {
+    const area = document.getElementById('photo-upload-area');
+    if (!area) return;
+
+    // Drag & drop
+    area.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        area.classList.add('drag-over');
+    });
+    area.addEventListener('dragleave', () => {
+        area.classList.remove('drag-over');
+    });
+    area.addEventListener('drop', (e) => {
+        e.preventDefault();
+        area.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file) processPhotoFile(file);
+    });
+
+    // Also support paste (Ctrl+V)
+    document.addEventListener('paste', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        const items = e.clipboardData.items;
+        for (const item of items) {
+            if (item.type.startsWith('image/')) {
+                e.preventDefault();
+                processPhotoFile(item.getAsFile());
+                return;
+            }
+        }
+    });
+}
+
+function handlePhotoSelect(event) {
+    const file = event.target.files[0];
+    if (file) processPhotoFile(file);
+    // Reset input so re-selecting the same file still triggers change
+    event.target.value = '';
+}
+
+function processPhotoFile(file) {
+    // Validate type
+    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
+        showToast('请选择 JPG、PNG 或 WebP 格式的图片');
+        return;
+    }
+    // Validate size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        showToast('照片大小不能超过 2MB');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        _photoData = reader.result;
+        const preview = document.getElementById('photo-preview');
+        const placeholder = document.getElementById('photo-placeholder');
+        const removeBtn = document.getElementById('photo-remove-btn');
+
+        preview.src = _photoData;
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+        removeBtn.style.display = 'flex';
+        _hasUnsavedChanges = true;
+    };
+    reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+    _photoData = '';
+    const preview = document.getElementById('photo-preview');
+    const placeholder = document.getElementById('photo-placeholder');
+    const removeBtn = document.getElementById('photo-remove-btn');
+
+    preview.src = '';
+    preview.style.display = 'none';
+    placeholder.style.display = '';
+    removeBtn.style.display = 'none';
+    _hasUnsavedChanges = true;
+}
 
 // ============================================================
 // Step Navigation
@@ -193,6 +279,7 @@ async function saveCurrentStep() {
         fields.email = document.getElementById('email').value.trim();
         fields.city = document.getElementById('city').value.trim();
         fields.years_experience = document.getElementById('years_experience').value;
+        fields.photo_data = _photoData;
     }
 
     if (currentStep === 2) {

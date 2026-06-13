@@ -169,6 +169,80 @@
 .classic-thumb { background: var(--color-ink); }
 .compact-thumb { background: #6B6B66; }
 
+/* ── Photo Upload ───────────────────────────────────────── */
+.photo-upload-area {
+    width: 100px;
+    height: 130px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: var(--color-bg);
+    transition: border-color var(--transition), background var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+.photo-upload-area:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-muted);
+}
+.photo-upload-area.drag-over {
+    border-color: var(--color-primary);
+    background: var(--color-primary-muted);
+    border-style: solid;
+}
+
+.photo-placeholder {
+    text-align: center;
+    color: var(--color-secondary);
+    pointer-events: none;
+}
+.photo-icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+.photo-hint {
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+.photo-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+}
+
+.photo-remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    transition: background var(--transition);
+    z-index: 2;
+}
+.photo-remove-btn:hover {
+    background: rgba(197,48,48,0.85);
+}
+
 /* ── Wizard Navigation ─────────────────────────────────── */
 .wizard-nav {
     display: flex; align-items: center; justify-content: space-between;

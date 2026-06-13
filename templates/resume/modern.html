@@ -2,6 +2,11 @@
 <div class="resume-modern">
     <!-- Header -->
     <header class="rm-header">
+        {% if resume.photo_data %}
+        <div class="rm-photo-wrap">
+            <img src="{{ resume.photo_data }}" alt="{{ resume.name }}" class="rm-photo">
+        </div>
+        {% endif %}
         <h1 class="rm-name">{{ resume.name }}</h1>
         <p class="rm-headline">{{ resume.headline or resume.title }}</p>
         <div class="rm-contact">

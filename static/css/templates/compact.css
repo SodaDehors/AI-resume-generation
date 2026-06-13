@@ -17,6 +17,17 @@
     margin-bottom: 20px;
 }
 
+.rcp-photo-wrap {
+    margin-bottom: 10px;
+}
+.rcp-photo {
+    width: 80px;
+    height: 108px;
+    object-fit: cover;
+    border-radius: 0;
+    border: 1px solid #7C7B76;
+}
+
 .rcp-name {
     font-size: 1.6rem;
     font-weight: 700;

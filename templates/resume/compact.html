@@ -2,6 +2,11 @@
 <div class="resume-compact">
     <!-- Header -->
     <header class="rcp-header">
+        {% if resume.photo_data %}
+        <div class="rcp-photo-wrap">
+            <img src="{{ resume.photo_data }}" alt="{{ resume.name }}" class="rcp-photo">
+        </div>
+        {% endif %}
         <h1 class="rcp-name">{{ resume.name }}</h1>
         <p class="rcp-contact-line">
             {% if resume.phone %}{{ resume.phone }} · {% endif %}
