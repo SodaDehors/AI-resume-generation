@@ -1,87 +1,47 @@
 /* ============================================================
-   Preview Page — Mailchimp Freddie style
-   Warm shadows, pill buttons, yellow accents.
+   Preview Page — Clean professional style
    ============================================================ */
 
-.preview-container {
-    padding: 0;
-}
+.preview-container { padding: 0; }
 
 /* ── Toolbar ───────────────────────────────────────────── */
 .preview-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 24px;
     background: var(--color-white);
-    border-bottom: none;
-    position: sticky;
-    top: 56px;
-    z-index: 50;
-    box-shadow: var(--shadow-warm);
-    flex-wrap: wrap;
-    gap: 12px;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky; top: 56px; z-index: 50;
+    flex-wrap: wrap; gap: 12px;
 }
+.toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 14px; }
+.toolbar-left h2 { font-size: 1.05rem; font-weight: 700; white-space: nowrap; }
 
-.toolbar-left, .toolbar-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.toolbar-left h2 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.template-switcher {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.template-switcher span {
-    font-size: 0.85rem;
-    color: var(--color-secondary);
-    font-weight: 500;
-}
+.template-switcher { display: flex; align-items: center; gap: 8px; }
+.template-switcher span { font-size: 0.84rem; color: var(--color-secondary); font-weight: 500; }
 
 .tpl-btn {
-    padding: 6px 16px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 2px solid var(--color-border);
-    border-radius: var(--radius-pill);
-    text-decoration: none;
-    color: var(--color-ink);
+    padding: 6px 16px; font-size: 0.84rem; font-weight: 600;
+    border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);
+    text-decoration: none; color: var(--color-ink);
     background: var(--color-white);
-    transition: all var(--transition-pop);
+    transition: all var(--transition);
     cursor: pointer;
 }
-
-.tpl-btn:hover {
-    border-color: var(--color-ink);
-}
-
+.tpl-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
 .tpl-btn.active {
-    background: var(--color-yellow);
-    color: var(--color-ink);
-    border-color: var(--color-ink);
+    background: var(--color-primary);
+    color: #fff; border-color: var(--color-primary);
 }
 
 /* ── Resume Wrapper ────────────────────────────────────── */
 .resume-wrapper {
-    display: flex;
-    justify-content: center;
+    display: flex; justify-content: center;
     padding: 32px 24px;
-    background: #f0ede8;
+    background: #ecebe6;
     min-height: calc(100vh - 120px);
 }
-
 .resume-page {
-    width: 210mm;
-    min-height: 297mm;
+    width: 210mm; min-height: 297mm;
     background: white;
     box-shadow: var(--shadow-card);
     overflow: hidden;
@@ -89,20 +49,8 @@
 
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 900px) {
-    .resume-wrapper {
-        padding: 0;
-    }
-    .resume-page {
-        width: 100%;
-        min-height: auto;
-        box-shadow: none;
-    }
-    .preview-toolbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .toolbar-right {
-        width: 100%;
-        flex-wrap: wrap;
-    }
+    .resume-wrapper { padding: 0; }
+    .resume-page { width: 100%; min-height: auto; box-shadow: none; }
+    .preview-toolbar { flex-direction: column; align-items: flex-start; }
+    .toolbar-right { width: 100%; flex-wrap: wrap; }
 }

@@ -27,13 +27,13 @@
         <!-- Quick Action Bar -->
         <div class="quick-actions">
             <button class="btn btn-outline btn-sm" onclick="loadSampleData()" title="一键填充示例数据，快速体验完整流程">
-                📥 加载示例数据
+               加载示例数据
             </button>
             <span class="quick-hint">快速体验，填充完整示例简历</span>
         </div>
         <!-- Step 1: Basic Information -->
         <div class="step-panel active" data-step="1">
-            <h2 class="step-title">📋 基本信息</h2>
+            <h2 class="step-title">基本信息</h2>
             <div class="form-row">
                 <div class="form-group">
                     <label>姓名 <span class="required">*</span></label>
@@ -75,21 +75,21 @@
 
         <!-- Step 2: Education -->
         <div class="step-panel" data-step="2">
-            <h2 class="step-title">🎓 教育背景</h2>
+            <h2 class="step-title">教育背景</h2>
             <div id="education-list"></div>
             <button class="btn btn-outline btn-add" onclick="addEducation()">+ 添加教育经历</button>
         </div>
 
         <!-- Step 3: Work Experience -->
         <div class="step-panel" data-step="3">
-            <h2 class="step-title">💼 工作经历</h2>
+            <h2 class="step-title">工作经历</h2>
             <div id="experience-list"></div>
             <button class="btn btn-outline btn-add" onclick="addExperience()">+ 添加工作经历</button>
         </div>
 
         <!-- Step 4: Skills & Certifications -->
         <div class="step-panel" data-step="4">
-            <h2 class="step-title">🛠 技能与证书</h2>
+            <h2 class="step-title">技能与证书</h2>
             <div class="form-group">
                 <label>专业技能</label>
                 <div class="tag-input-container">
@@ -113,14 +113,14 @@
 
         <!-- Step 5: Projects -->
         <div class="step-panel" data-step="5">
-            <h2 class="step-title">🚀 项目经验</h2>
+            <h2 class="step-title">项目经验</h2>
             <div id="projects-list"></div>
             <button class="btn btn-outline btn-add" onclick="addProject()">+ 添加项目</button>
         </div>
 
         <!-- Step 6: Settings & Self-Evaluation -->
         <div class="step-panel" data-step="6">
-            <h2 class="step-title">⚙️ 自我评价与设置</h2>
+            <h2 class="step-title">自我评价与设置</h2>
             <div class="form-group">
                 <label>自我评价</label>
                 <textarea id="self_evaluation" rows="5"
@@ -136,7 +136,7 @@
 
             <hr class="section-divider">
 
-            <h3>🤖 AI 设置</h3>
+            <h3>AI 设置</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label>AI 引擎</label>
@@ -180,7 +180,7 @@
         <span class="step-indicator" id="step-indicator">1 / 6</span>
         <button class="btn btn-primary" id="btn-next" onclick="nextStep()">下一步 →</button>
         <button class="btn btn-success" id="btn-generate" onclick="generateResume()"
-                style="display:none;">🚀 生成简历</button>
+                style="display:none;">生成简历</button>
     </div>
 
     <!-- Generation Loading Overlay -->

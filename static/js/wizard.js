@@ -383,11 +383,11 @@ function showToast(message) {
         toast.id = 'toast';
         toast.style.cssText = `
             position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-            background: #FFE01B; color: #241C15; padding: 12px 28px;
-            border-radius: 9999px; font-size: 0.88rem; z-index: 9999;
-            box-shadow: 0 4px 12px rgba(36,28,21,0.12);
-            font-weight: 700; letter-spacing: 0.01em;
-            transition: opacity 0.3s; font-family: inherit;
+            background: #1C1C1A; color: #fff; padding: 12px 26px;
+            border-radius: 6px; font-size: 0.88rem; z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            font-weight: 600; letter-spacing: 0.01em;
+            transition: opacity 0.25s; font-family: inherit;
         `;
         document.body.appendChild(toast);
     }
@@ -687,12 +687,12 @@ function initBackToTop() {
     btn.style.cssText = `
         position: fixed; bottom: 28px; right: 28px;
         width: 44px; height: 44px; border-radius: 50%;
-        background: #FFE01B; color: #241C15; border: 3px solid #241C15;
+        background: #0D7377; color: #fff; border: none;
         font-size: 1.2rem; cursor: pointer; z-index: 99;
-        font-family: inherit; font-weight: 800;
-        box-shadow: 0 4px 12px rgba(36,28,21,0.12);
+        font-family: inherit; font-weight: 700;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         opacity: 0; pointer-events: none;
-        transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+        transition: opacity 0.25s ease;
     `;
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     document.body.appendChild(btn);
