@@ -383,9 +383,11 @@ function showToast(message) {
         toast.id = 'toast';
         toast.style.cssText = `
             position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-            background: #2e7d32; color: #fff; padding: 12px 24px;
-            border-radius: 8px; font-size: 0.9rem; z-index: 9999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: opacity 0.3s;
+            background: #FFE01B; color: #241C15; padding: 12px 28px;
+            border-radius: 9999px; font-size: 0.88rem; z-index: 9999;
+            box-shadow: 0 4px 12px rgba(36,28,21,0.12);
+            font-weight: 700; letter-spacing: 0.01em;
+            transition: opacity 0.3s; font-family: inherit;
         `;
         document.body.appendChild(toast);
     }
@@ -404,7 +406,7 @@ function addEducation(data = {}) {
     const div = document.createElement('div');
     div.className = 'entry-card';
     div.innerHTML = `
-        <button class="entry-remove" onclick="this.parentElement.remove()">✕</button>
+        <button class="entry-remove" onclick="this.parentElement.remove()"><span class="remove-icon"></span></button>
         <div class="form-row">
             <div class="form-group">
                 <label>学校名称</label>
@@ -459,7 +461,7 @@ function addExperience(data = {}) {
     const div = document.createElement('div');
     div.className = 'entry-card';
     div.innerHTML = `
-        <button class="entry-remove" onclick="this.parentElement.remove()">✕</button>
+        <button class="entry-remove" onclick="this.parentElement.remove()"><span class="remove-icon"></span></button>
         <div class="form-row">
             <div class="form-group">
                 <label>公司名称</label>
@@ -598,7 +600,7 @@ function addProject(data = {}) {
     const div = document.createElement('div');
     div.className = 'entry-card';
     div.innerHTML = `
-        <button class="entry-remove" onclick="this.parentElement.remove()">✕</button>
+        <button class="entry-remove" onclick="this.parentElement.remove()"><span class="remove-icon"></span></button>
         <div class="form-row">
             <div class="form-group">
                 <label>项目名称</label>
@@ -685,11 +687,12 @@ function initBackToTop() {
     btn.style.cssText = `
         position: fixed; bottom: 28px; right: 28px;
         width: 44px; height: 44px; border-radius: 50%;
-        background: #00838f; color: #fff; border: none;
-        font-size: 1.3rem; cursor: pointer; z-index: 99;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        background: #FFE01B; color: #241C15; border: 3px solid #241C15;
+        font-size: 1.2rem; cursor: pointer; z-index: 99;
+        font-family: inherit; font-weight: 800;
+        box-shadow: 0 4px 12px rgba(36,28,21,0.12);
         opacity: 0; pointer-events: none;
-        transition: opacity 0.3s;
+        transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
     `;
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     document.body.appendChild(btn);

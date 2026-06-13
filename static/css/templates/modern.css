@@ -1,10 +1,11 @@
 /* ============================================================
-   Modern Resume Template - Teal accent, card-based
+   Modern Resume Template — muted ink + ground palette
+   Card-based, single column, A4-optimized.
    ============================================================ */
 
 .resume-modern {
     font-family: "Noto Sans CJK SC", "WenQuanYi Micro Hei", "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB", sans-serif;
-    color: #263238;
+    color: #241C15;
     padding: 40px 48px;
     line-height: 1.7;
 }
@@ -14,20 +15,20 @@
     text-align: center;
     padding-bottom: 28px;
     margin-bottom: 28px;
-    border-bottom: 3px solid #00838f;
+    border-bottom: 1px solid #FFE01B;
 }
 
 .rm-name {
     font-size: 2rem;
     font-weight: 700;
-    color: #00838f;
+    color: #241C15;
     margin-bottom: 6px;
     letter-spacing: 2px;
 }
 
 .rm-headline {
     font-size: 1.05rem;
-    color: #546e7a;
+    color: #88837C;
     margin-bottom: 14px;
 }
 
@@ -37,7 +38,7 @@
     flex-wrap: wrap;
     gap: 18px;
     font-size: 0.88rem;
-    color: #607d8b;
+    color: #88837C;
 }
 
 /* Sections */
@@ -47,8 +48,8 @@
 
 .rm-section-title {
     font-size: 1.15rem;
-    color: #00838f;
-    border-bottom: 2px solid #e0f7fa;
+    color: #241C15;
+    border-bottom: 1px solid #FFE01B;
     padding-bottom: 6px;
     margin-bottom: 14px;
     letter-spacing: 1px;
@@ -56,18 +57,18 @@
 
 /* Summary Box */
 .rm-summary-box {
-    background: #e0f7fa;
+    background: #F4F2EC;
     padding: 16px 20px;
-    border-radius: 8px;
-    border-left: 4px solid #00838f;
+    border-radius: 0;
+    border-left: 3px solid #241C15;
     line-height: 1.8;
 }
 
 /* Experience Cards */
 .rm-exp-card {
-    background: #fafafa;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    background: transparent;
+    border: 1px solid #FFE01B;
+    border-radius: 0;
     padding: 16px 20px;
     margin-bottom: 14px;
 }
@@ -81,18 +82,18 @@
 
 .rm-exp-title {
     font-size: 1rem;
-    color: #263238;
+    color: #241C15;
 }
 
 .rm-exp-company {
     font-size: 0.9rem;
-    color: #00838f;
+    color: #241C15;
     font-weight: 500;
 }
 
 .rm-exp-date {
     font-size: 0.85rem;
-    color: #90a4ae;
+    color: #88837C;
     white-space: nowrap;
 }
 
@@ -114,24 +115,24 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 10px 0;
-    border-bottom: 1px dotted #e0e0e0;
+    border-bottom: 1px dotted #FFE01B;
 }
 
 .rm-edu-item:last-child { border-bottom: none; }
 
 .rm-edu-left h4 {
     font-size: 0.95rem;
-    color: #263238;
+    color: #241C15;
 }
 
 .rm-edu-left p {
     font-size: 0.88rem;
-    color: #607d8b;
+    color: #88837C;
 }
 
 .rm-edu-date {
     font-size: 0.85rem;
-    color: #90a4ae;
+    color: #88837C;
     white-space: nowrap;
 }
 
@@ -143,7 +144,7 @@
 .rm-skill-cat {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #455a64;
+    color: #241C15;
 }
 
 .rm-tags {
@@ -155,19 +156,20 @@
 
 .rm-tag {
     display: inline-block;
-    background: #e0f7fa;
-    color: #006064;
+    background: #F4F2EC;
+    color: #241C15;
     padding: 4px 12px;
-    border-radius: 16px;
+    border-radius: 0;
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 400;
+    border: 1px solid #FFE01B;
 }
 
 /* Projects */
 .rm-project-card {
-    background: #fafafa;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    background: transparent;
+    border: 1px solid #FFE01B;
+    border-radius: 0;
     padding: 14px 18px;
     margin-bottom: 12px;
 }
@@ -181,26 +183,26 @@
 
 .rm-proj-name {
     font-size: 1rem;
-    color: #263238;
+    color: #241C15;
 }
 
 .rm-proj-role {
     font-size: 0.85rem;
-    color: #00838f;
-    background: #e0f7fa;
+    color: #241C15;
+    background: #F4F2EC;
     padding: 2px 10px;
-    border-radius: 12px;
+    border-radius: 0;
 }
 
 .rm-proj-tech {
     font-size: 0.88rem;
-    color: #546e7a;
+    color: #88837C;
     margin-bottom: 6px;
 }
 
 .rm-proj-desc {
     font-size: 0.9rem;
-    color: #455a64;
+    color: #241C15;
     line-height: 1.7;
 }
 
@@ -213,7 +215,7 @@
 
 .rm-sub-title {
     font-size: 0.9rem;
-    color: #546e7a;
+    color: #88837C;
     margin-bottom: 6px;
 }
 
@@ -228,7 +230,7 @@
 .rm-self-eval {
     font-size: 0.92rem;
     line-height: 1.8;
-    color: #455a64;
+    color: #241C15;
 }
 
 /* Print */
