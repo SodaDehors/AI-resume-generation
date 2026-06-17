@@ -71,4 +71,31 @@ const API = {
         const resp = await fetch('/api/status');
         return resp.json();
     },
+
+    /**
+     * Parse a self-introduction text into structured resume fields.
+     * @param {string} text - The raw self-introduction text
+     */
+    async parseIntro(text) {
+        const resp = await fetch('/api/parse-intro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text }),
+        });
+        return resp.json();
+    },
+
+    /**
+     * One-shot: parse self-intro text AND generate full resume.
+     * Skips the wizard entirely — straight to preview.
+     * @param {string} text - The raw self-introduction text
+     */
+    async quickGenerate(text) {
+        const resp = await fetch('/api/quick-generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text }),
+        });
+        return resp.json();
+    },
 };

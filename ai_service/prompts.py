@@ -217,3 +217,75 @@ def build_self_eval_prompt(resume_data: dict) -> str:
         title=resume_data.get('title', ''),
         years_experience=resume_data.get('years_experience', ''),
     )
+
+
+# ============================================================
+# 6. Self-Introduction Parsing — Natural Language → Structured Resume Data
+# ============================================================
+PARSE_INTRO_SYSTEM = SYSTEM_PERSONA + (
+    '\n你擅长从自然语言自述中精准提取结构化信息。'
+    '即使信息不完整或表述模糊，你也要合理推断并标注置信度。'
+    '所有字段必须用中文输出，日期格式统一为YYYY-MM。'
+)
+
+PARSE_INTRO_USER_TEMPLATE = """请从以下用户的自然语言自述中，提取所有可用于简历的结构化信息。
+
+用户自述：
+{raw_text}
+
+请输出如下JSON格式（所有字段均为必填，无法提取的字段填写空字符串或空数组）：
+
+{{
+    "name": "姓名",
+    "title": "求职意向/期望职位（如无法确定，根据工作经历推断最可能的职位）",
+    "phone": "手机号（原文未提及则留空）",
+    "email": "邮箱（原文未提及则留空）",
+    "city": "所在城市（如：北京、上海、深圳）",
+    "years_experience": "工作年限区间，必须是以下之一：应届毕业生、1-3年、3-5年、5-10年、10年以上",
+    "education": [
+        {{
+            "school": "学校全称",
+            "degree": "学位（本科/硕士/博士/大专/其他）",
+            "major": "专业全称",
+            "start_date": "入学时间（YYYY-MM，如无法确定则填YYYY-09）",
+            "end_date": "毕业时间（YYYY-MM，如无法确定则填YYYY-06）"
+        }}
+    ],
+    "experience": [
+        {{
+            "company": "公司/组织全称",
+            "title": "职位名称",
+            "start_date": "开始时间（YYYY-MM）",
+            "end_date": "结束时间（YYYY-MM 或 至今）",
+            "raw_description": "1-3句话的工作内容描述，包含主要职责和成果"
+        }}
+    ],
+    "skills": [
+        {{"name": "技能名称", "level": "熟练程度（精通/熟练/掌握/了解）"}}
+    ],
+    "certifications": [
+        {{"name": "证书名称", "issuer": "颁发机构"}}
+    ],
+    "languages": [
+        {{"name": "语言名称", "level": "熟练程度（母语/流利/良好/基础）"}}
+    ],
+    "projects": [
+        {{
+            "name": "项目名称",
+            "role": "担任角色",
+            "technologies": "使用的技术栈（逗号分隔）",
+            "raw_description": "1-2句话描述项目背景和你的贡献"
+        }}
+    ],
+    "self_evaluation": "基于自述推断的个人特质描述（50-100字）",
+    "career_goal": "基于自述推断的职业目标（20-50字）"
+}}
+
+重要规则：
+1. 原文中明确提到的信息，直接提取
+2. 原文未明确但可以合理推断的信息，填写推断值
+3. 完全无法确定的信息，填写空字符串或空数组
+4. 技能列表应尽可能全面，包括原文中提到的所有技能（编程语言、框架、工具、证书、语言能力等）
+5. 工作年限根据工作经历的时间跨度计算
+6. education、experience、projects 列表按时间顺序排列（最近的在后面）
+7. 只输出JSON，不要输出任何其他内容"""

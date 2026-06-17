@@ -26,7 +26,7 @@ from utils.session_manager import (
 import threading
 _gen_progress = {}
 _gen_lock = threading.Lock()
-from ai_service import create_llm_client
+from ai_service import create_llm_client, FallbackClient
 from resume.generator import ResumeGenerator
 from pdf_generator.engine import generate_pdf, is_pdf_available
 
@@ -346,6 +346,198 @@ def register_routes(app):
         session['ai_provider'] = data.get('provider', 'claude')
         session['api_key'] = data.get('api_key', '')
         return jsonify({'success': True})
+
+    @app.route('/api/parse-intro', methods=['POST'])
+    def api_parse_intro():
+        """Parse a natural-language self-introduction into structured resume fields."""
+        data = request.get_json(silent=True) or {}
+        raw_text = data.get('text', '').strip()
+
+        # Validate input
+        if not raw_text:
+            return jsonify({
+                'success': False,
+                'error': '请提供自述文本'
+            }), 400
+
+        if len(raw_text) < 10:
+            return jsonify({
+                'success': False,
+                'error': '自述文本太短，请提供更详细的自我介绍（至少10个字符）'
+            }), 400
+
+        # Get AI config from session, with env-var fallback
+        ai_config = get_ai_config()
+
+        try:
+            # Create LLM client
+            client = create_llm_client(
+                provider=ai_config.get('provider', 'claude'),
+                api_key=ai_config.get('api_key', ''),
+            )
+
+            # Build prompt
+            from ai_service.prompts import PARSE_INTRO_SYSTEM, PARSE_INTRO_USER_TEMPLATE
+            user_prompt = PARSE_INTRO_USER_TEMPLATE.format(raw_text=raw_text)
+
+            # Call LLM
+            result = client.generate(
+                system_prompt=PARSE_INTRO_SYSTEM,
+                user_prompt=user_prompt,
+                temperature=0.3,
+                max_tokens=4000,
+            )
+
+            # Parse JSON response
+            from resume.formatter import extract_json
+            parsed = extract_json(result)
+
+            if not parsed:
+                return jsonify({
+                    'success': False,
+                    'error': 'AI解析返回为空，请尝试重新输入或检查API Key配置'
+                }), 500
+
+            # Normalize years_experience to dropdown values
+            valid_years = ['应届毕业生', '1-3年', '3-5年', '5-10年', '10年以上']
+            if parsed.get('years_experience') not in valid_years:
+                parsed['years_experience'] = ''
+
+            # Ensure list fields are present
+            for list_field in ['education', 'experience', 'skills',
+                               'certifications', 'languages', 'projects']:
+                if not isinstance(parsed.get(list_field), list):
+                    parsed[list_field] = []
+
+            # Store parsed data into session
+            update_resume_data({
+                'name': parsed.get('name', ''),
+                'title': parsed.get('title', ''),
+                'phone': parsed.get('phone', ''),
+                'email': parsed.get('email', ''),
+                'city': parsed.get('city', ''),
+                'years_experience': parsed.get('years_experience', ''),
+                'education': parsed.get('education', []),
+                'experience': parsed.get('experience', []),
+                'skills': parsed.get('skills', []),
+                'certifications': parsed.get('certifications', []),
+                'languages': parsed.get('languages', []),
+                'projects': parsed.get('projects', []),
+                'self_evaluation': parsed.get('self_evaluation', ''),
+                'career_goal': parsed.get('career_goal', ''),
+            })
+
+            return jsonify({
+                'success': True,
+                'data': parsed,
+                'is_fallback': isinstance(client, FallbackClient),
+            })
+
+        except Exception as e:
+            logger.exception('Self-intro parsing failed')
+            return jsonify({
+                'success': False,
+                'error': f'解析失败：{str(e)}'
+            }), 500
+
+    @app.route('/api/quick-generate', methods=['POST'])
+    def api_quick_generate():
+        """One-shot: parse self-intro text AND generate full resume, skip wizard."""
+        data = request.get_json(silent=True) or {}
+        raw_text = data.get('text', '').strip()
+
+        # ── Validate input ──
+        if not raw_text:
+            return jsonify({'success': False, 'error': '请提供自述文本'}), 400
+        if len(raw_text) < 10:
+            return jsonify({'success': False, 'error': '自述文本太短，请至少输入10个字符'}), 400
+
+        ai_config = get_ai_config()
+        sid = session.get('_id')
+        if not sid:
+            import uuid
+            sid = str(uuid.uuid4())
+            session['_id'] = sid
+
+        def update_progress(current, total, message):
+            with _gen_lock:
+                _gen_progress[sid] = {
+                    'current': current, 'total': total,
+                    'message': message,
+                    'percent': int(current / max(total, 1) * 100),
+                }
+
+        try:
+            # ── Step 1: Parse self-intro text ──
+            update_progress(0, 1, '正在解析自我介绍...')
+            client = create_llm_client(
+                provider=ai_config.get('provider', 'claude'),
+                api_key=ai_config.get('api_key', ''),
+            )
+
+            from ai_service.prompts import PARSE_INTRO_SYSTEM, PARSE_INTRO_USER_TEMPLATE
+            user_prompt = PARSE_INTRO_USER_TEMPLATE.format(raw_text=raw_text)
+            result = client.generate(
+                system_prompt=PARSE_INTRO_SYSTEM,
+                user_prompt=user_prompt,
+                temperature=0.3, max_tokens=4000,
+            )
+
+            from resume.formatter import extract_json
+            parsed = extract_json(result)
+            if not parsed:
+                return jsonify({'success': False, 'error': 'AI解析返回为空，请检查API Key配置或输入更详细的自我介绍'}), 500
+
+            # Normalize and store parsed data
+            valid_years = ['应届毕业生', '1-3年', '3-5年', '5-10年', '10年以上']
+            if parsed.get('years_experience') not in valid_years:
+                parsed['years_experience'] = ''
+            for list_field in ['education', 'experience', 'skills',
+                               'certifications', 'languages', 'projects']:
+                if not isinstance(parsed.get(list_field), list):
+                    parsed[list_field] = []
+
+            resume_data = {
+                'name': parsed.get('name', ''),
+                'title': parsed.get('title', ''),
+                'phone': parsed.get('phone', ''),
+                'email': parsed.get('email', ''),
+                'city': parsed.get('city', ''),
+                'years_experience': parsed.get('years_experience', ''),
+                'education': parsed.get('education', []),
+                'experience': parsed.get('experience', []),
+                'skills': parsed.get('skills', []),
+                'certifications': parsed.get('certifications', []),
+                'languages': parsed.get('languages', []),
+                'projects': parsed.get('projects', []),
+                'self_evaluation': parsed.get('self_evaluation', ''),
+                'career_goal': parsed.get('career_goal', ''),
+            }
+            update_resume_data(resume_data)
+
+            # ── Step 2: Generate full resume ──
+            if not resume_data.get('name') or not resume_data.get('title'):
+                # Minimal fallback: set defaults so generation doesn't fail
+                if not resume_data.get('name'):
+                    resume_data['name'] = '未填写'
+                if not resume_data.get('title'):
+                    resume_data['title'] = '求职者'
+
+            generator = ResumeGenerator(client, progress_callback=update_progress)
+            resume = generator.generate_all(resume_data)
+            set_generated_resume(resume)
+            update_progress(1, 1, '✅ 简历生成完成！')
+
+            template = get_selected_template()
+            return jsonify({
+                'success': True,
+                'template': template,
+                'redirect': url_for('preview_template', template=template),
+            })
+
+        except Exception as e:
+            logger.exception('Quick-generate failed')
+            return jsonify({'success': False, 'error': f'生成失败：{str(e)}'}), 500
 
 
 def register_error_handlers(app):

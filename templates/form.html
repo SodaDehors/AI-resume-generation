@@ -26,10 +26,13 @@
     <div class="wizard-content" id="wizard-content">
         <!-- Quick Action Bar -->
         <div class="quick-actions">
+            <button class="btn btn-primary btn-sm" onclick="openParseIntroModal()" title="粘贴一段自然语言自我介绍，AI自动解析并填充所有表单字段">
+               AI 智能解析
+            </button>
             <button class="btn btn-outline btn-sm" onclick="loadSampleData()" title="一键填充示例数据，快速体验完整流程">
                加载示例数据
             </button>
-            <span class="quick-hint">快速体验，填充完整示例简历</span>
+            <span class="quick-hint">粘贴自我介绍，一键生成或智能填表</span>
         </div>
         <!-- Step 1: Basic Information -->
         <div class="step-panel active" data-step="1">

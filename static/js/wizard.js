@@ -461,6 +461,240 @@ function loadSampleData() {
 }
 
 // ============================================================
+// AI Self-Introduction — Modal with two modes
+//   Mode 1: "一键生成简历" — parse + generate, skip wizard → preview
+//   Mode 2: "智能填表"       — parse only, populate wizard for review
+// ============================================================
+function openParseIntroModal() {
+    let modal = document.getElementById('parse-intro-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'parse-intro-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-dialog parse-intro-dialog">
+                <div class="modal-header">
+                    <h3>AI 智能解析</h3>
+                    <button class="modal-close" onclick="closeParseIntroModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-desc">
+                        粘贴一段自然语言的自我介绍，AI 将自动解析并生成简历。
+                        支持描述教育经历、工作经验、技能、项目等。
+                    </p>
+                    <textarea id="parse-intro-textarea"
+                              class="parse-intro-textarea"
+                              placeholder="例如：我叫张三，毕业于清华大学计算机系，之前在阿里巴巴做了3年后端开发，擅长Python和Go，做过一个电商推荐系统项目..."
+                              rows="10"
+                              maxlength="5000"></textarea>
+                    <p class="form-hint" style="margin-top:6px;">
+                        <span id="parse-char-count">0</span> / 5000 字符
+                    </p>
+                    <div id="parse-intro-error" class="form-error" style="display:none;"></div>
+                    <div class="parse-mode-hint">
+                        <strong>一键生成简历</strong>：解析后直接生成最终简历预览<br>
+                        <strong>智能填表</strong>：解析后填入表单，您可以逐项检查和修改后再生成
+                    </div>
+                </div>
+                <div class="modal-footer parse-modal-footer">
+                    <button class="btn btn-outline" onclick="closeParseIntroModal()">取消</button>
+                    <button class="btn btn-outline" id="btn-parse-fill"
+                            onclick="startParseIntro('fill')">
+                        智能填表
+                    </button>
+                    <button class="btn btn-primary" id="btn-parse-generate"
+                            onclick="startParseIntro('generate')">
+                        一键生成简历
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Character counter
+        const textarea = document.getElementById('parse-intro-textarea');
+        const counter = document.getElementById('parse-char-count');
+        textarea.addEventListener('input', () => {
+            const len = textarea.value.length;
+            counter.textContent = len;
+            counter.style.color = len > 4500 ? '#c53030' : len > 4000 ? '#f57f17' : '';
+        });
+
+        // Close on Escape key
+        modal.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeParseIntroModal();
+        });
+
+        // Close on overlay click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeParseIntroModal();
+        });
+    }
+
+    modal.style.display = 'flex';
+    document.getElementById('parse-intro-textarea').focus();
+}
+
+function closeParseIntroModal() {
+    const modal = document.getElementById('parse-intro-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+/**
+ * @param {'fill' | 'generate'} mode
+ *   'fill'     — parse text → populate wizard form → jump to step 1 for review
+ *   'generate' — parse text → generate resume → redirect to preview page
+ */
+async function startParseIntro(mode) {
+    const textarea = document.getElementById('parse-intro-textarea');
+    const text = textarea.value.trim();
+    const errorDiv = document.getElementById('parse-intro-error');
+    const btnFill = document.getElementById('btn-parse-fill');
+    const btnGen  = document.getElementById('btn-parse-generate');
+
+    // Clear previous errors
+    errorDiv.style.display = 'none';
+
+    // Validate
+    if (!text) {
+        errorDiv.textContent = '请输入您的自我介绍';
+        errorDiv.style.display = 'block';
+        return;
+    }
+    if (text.length < 10) {
+        errorDiv.textContent = '文本太短，请提供更详细的自我介绍（至少10个字符）';
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    // Loading state — disable both buttons and textarea
+    btnFill.disabled = true;
+    btnGen.disabled = true;
+    btnGen.textContent = '生成中...';
+    btnFill.textContent = '解析中...';
+    textarea.disabled = true;
+
+    try {
+        if (mode === 'generate') {
+            // ── Mode 1: Quick Generate (parse + generate → preview) ──
+            const result = await API.quickGenerate(text);
+
+            if (result.success) {
+                closeParseIntroModal();
+                showToast('✅ 简历生成成功！正在跳转...');
+                setTimeout(() => {
+                    window.location.href = result.redirect || '/preview';
+                }, 600);
+            } else {
+                errorDiv.textContent = result.error || '生成失败，请重试';
+                errorDiv.style.display = 'block';
+            }
+        } else {
+            // ── Mode 2: Parse only (populate form for manual review) ──
+            const result = await API.parseIntro(text);
+
+            if (result.success && result.data) {
+                populateFormFromParsedData(result.data);
+                closeParseIntroModal();
+
+                let toastMsg = '✅ 解析成功！请检查并修改各步骤信息';
+                if (result.is_fallback) {
+                    toastMsg = '⚠️ 解析完成（模板模式，建议配置API Key以获得更准确的结果）。请检查并修改';
+                }
+                showToast(toastMsg);
+
+                // Navigate to step 1 for review
+                currentStep = 1;
+                showStep(1);
+                updateProgressBar();
+                updateNavButtons();
+            } else {
+                errorDiv.textContent = result.error || '解析失败，请重试';
+                errorDiv.style.display = 'block';
+            }
+        }
+    } catch (err) {
+        errorDiv.textContent = '网络错误：' + err.message;
+        errorDiv.style.display = 'block';
+    } finally {
+        btnFill.disabled = false;
+        btnGen.disabled = false;
+        btnGen.textContent = '一键生成简历';
+        btnFill.textContent = '智能填表';
+        textarea.disabled = false;
+    }
+}
+
+function populateFormFromParsedData(data) {
+    // Step 1: Basic Info
+    if (data.name) document.getElementById('name').value = data.name;
+    if (data.title) document.getElementById('title').value = data.title;
+    if (data.phone) document.getElementById('phone').value = data.phone;
+    if (data.email) document.getElementById('email').value = data.email;
+    if (data.city) document.getElementById('city').value = data.city;
+    if (data.years_experience) {
+        const selectEl = document.getElementById('years_experience');
+        const validOpts = ['应届毕业生', '1-3年', '3-5年', '5-10年', '10年以上'];
+        if (validOpts.includes(data.years_experience)) {
+            selectEl.value = data.years_experience;
+        }
+    }
+
+    // Step 2: Education
+    const eduList = document.getElementById('education-list');
+    eduList.innerHTML = '';
+    if (Array.isArray(data.education) && data.education.length > 0) {
+        data.education.forEach(edu => addEducation(edu));
+    }
+
+    // Step 3: Work Experience
+    const expList = document.getElementById('experience-list');
+    expList.innerHTML = '';
+    if (Array.isArray(data.experience) && data.experience.length > 0) {
+        data.experience.forEach(exp => addExperience(exp));
+    }
+
+    // Step 4: Skills, Languages, Certifications
+    const skillsTags = document.getElementById('skills-tags');
+    skillsTags.innerHTML = '';
+    if (Array.isArray(data.skills) && data.skills.length > 0) {
+        data.skills.forEach(s => {
+            const name = typeof s === 'string' ? s : (s.name || '');
+            if (name) addSkillTag(name);
+        });
+    }
+
+    const langList = document.getElementById('languages-list');
+    langList.innerHTML = '';
+    if (Array.isArray(data.languages) && data.languages.length > 0) {
+        data.languages.forEach(l => addLanguage(l));
+    }
+
+    const certList = document.getElementById('certifications-list');
+    certList.innerHTML = '';
+    if (Array.isArray(data.certifications) && data.certifications.length > 0) {
+        data.certifications.forEach(c => addCertification(c));
+    }
+
+    // Step 5: Projects
+    const projList = document.getElementById('projects-list');
+    projList.innerHTML = '';
+    if (Array.isArray(data.projects) && data.projects.length > 0) {
+        data.projects.forEach(p => addProject(p));
+    }
+
+    // Step 6: Self-Evaluation & Career Goal
+    if (data.self_evaluation) {
+        document.getElementById('self_evaluation').value = data.self_evaluation;
+    }
+    if (data.career_goal) {
+        document.getElementById('career_goal').value = data.career_goal;
+    }
+
+    _hasUnsavedChanges = true;
+}
+
+// ============================================================
 // Toast notification
 // ============================================================
 function showToast(message) {
