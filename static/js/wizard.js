@@ -709,6 +709,7 @@ function showToast(message) {
             box-shadow: 0 2px 10px rgba(0,0,0,0.12);
             font-weight: 600; letter-spacing: 0.01em;
             transition: opacity 0.25s; font-family: inherit;
+            max-width: 90vw; text-align: center;
         `;
         document.body.appendChild(toast);
     }

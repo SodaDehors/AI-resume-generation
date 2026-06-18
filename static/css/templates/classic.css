@@ -226,6 +226,36 @@
     color: #7C7B76;
 }
 
+/* Screen: mobile responsive */
+@media screen and (max-width: 600px) {
+    .resume-classic {
+        flex-direction: column;
+    }
+    .rc-sidebar {
+        width: 100%;
+        min-width: unset;
+        padding: 24px 16px;
+        gap: 14px;
+    }
+    .rc-main {
+        padding: 20px 16px;
+    }
+    .rc-exp-header {
+        flex-direction: column;
+        gap: 2px;
+    }
+    .rc-proj-header {
+        flex-direction: column;
+        gap: 2px;
+    }
+    .rc-section-title {
+        font-size: 1rem;
+    }
+    .rc-photo, .rc-photo-placeholder {
+        width: 80px; height: 80px;
+    }
+}
+
 /* Print */
 @media print {
     .resume-classic {

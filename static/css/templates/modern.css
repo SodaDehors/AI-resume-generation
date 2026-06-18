@@ -244,6 +244,39 @@
     color: #241C15;
 }
 
+/* Screen: mobile responsive */
+@media screen and (max-width: 600px) {
+    .resume-modern {
+        padding: 20px 16px;
+    }
+    .rm-name { font-size: 1.4rem; }
+    .rm-headline { font-size: 0.9rem; }
+    .rm-contact { gap: 10px; font-size: 0.8rem; }
+    .rm-exp-header {
+        flex-direction: column;
+        gap: 2px;
+    }
+    .rm-exp-card, .rm-project-card {
+        padding: 12px 14px;
+    }
+    .rm-two-col {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .rm-proj-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .rm-edu-item {
+        flex-direction: column;
+        gap: 2px;
+    }
+    .rm-section-title { font-size: 1.05rem; }
+    .rm-tag { font-size: 0.78rem; padding: 3px 8px; }
+    .rm-tags { gap: 5px; }
+}
+
 /* Print */
 @media print {
     .resume-modern {

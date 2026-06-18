@@ -92,6 +92,20 @@
     line-height: 1.5;
 }
 
+/* Screen: mobile responsive */
+@media screen and (max-width: 600px) {
+    .resume-compact {
+        padding: 16px 14px;
+    }
+    .rcp-name { font-size: 1.3rem; }
+    .rcp-contact-line { font-size: 0.82rem; }
+    .rcp-headline { font-size: 0.85rem; }
+    .rcp-section-title { font-size: 0.92rem; }
+    .rcp-item-header { font-size: 0.88rem; }
+    .rcp-bullets li { font-size: 0.85rem; }
+    .rcp-bullets { padding-left: 16px; }
+}
+
 /* Print */
 @media print {
     .resume-compact {

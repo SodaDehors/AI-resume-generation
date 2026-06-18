@@ -382,10 +382,69 @@
 
 /* ── Responsive ────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .wizard-progress { overflow-x: auto; justify-content: flex-start; padding-bottom: 8px; }
-    .progress-label { font-size: 0.7rem; }
     .template-selector { flex-direction: column; }
     .modal-overlay { padding: 12px; }
     .modal-dialog { max-width: 100%; max-height: 90vh; }
     .modal-header, .modal-body, .modal-footer { padding-left: 16px; padding-right: 16px; }
+}
+
+@media (max-width: 480px) {
+    /* Progress bar: circles only, hide labels & lines */
+    .wizard-progress { gap: 0; padding: 0; margin-bottom: 24px; }
+    .progress-label { display: none; }
+    .progress-line { display: none; }
+    .progress-circle { width: 32px; height: 32px; font-size: 0.75rem; }
+    .progress-step { gap: 0; }
+
+    /* Wizard container */
+    .wizard-container { padding: 20px 12px; }
+
+    /* Step panels */
+    .step-panel { padding: 0; }
+    .step-title { font-size: 1.05rem; margin-bottom: 16px; padding-bottom: 8px; }
+
+    /* Quick actions: wrap, hide hint */
+    .quick-actions { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
+    .quick-hint { display: none; }
+    .quick-actions .btn-sm { flex: 0 0 auto; }
+
+    /* Entry cards: compact padding, bigger remove button */
+    .entry-card { padding: 14px; }
+    .entry-card .entry-remove {
+        width: 44px; height: 44px;
+        top: 2px; right: 2px;
+        font-size: 1.4rem;
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Language & cert rows: stack vertically */
+    .lang-row, .cert-row { flex-direction: column; gap: 8px; }
+    .lang-row input, .cert-row input { width: 100%; }
+    .lang-row select { width: 100%; }
+    .lang-row .btn-sm, .cert-row .btn-sm { align-self: flex-end; }
+
+    /* Tag input */
+    .tag-input-container { padding: 8px; }
+    .tag-item { font-size: 0.8rem; padding: 3px 10px; }
+
+    /* Template selector */
+    .template-option { padding: 14px 10px; }
+
+    /* Photo upload: smaller on mobile */
+    .photo-upload-area { width: 80px; height: 104px; }
+
+    /* Navigation buttons */
+    .wizard-nav { margin-top: 24px; padding-top: 16px; gap: 8px; }
+    .wizard-nav .btn { padding: 10px 14px; font-size: 0.85rem; }
+    .step-indicator { font-size: 0.8rem; }
+
+    /* Modal: 3 buttons stack vertically full-width */
+    .parse-modal-footer { flex-direction: column; }
+    .parse-modal-footer .btn { width: 100%; justify-content: center; }
+    .parse-intro-textarea { rows: 6; font-size: 0.88rem; }
+    .modal-desc { font-size: 0.82rem; }
+
+    /* Loading overlay */
+    .loading-content h3 { font-size: 1rem; }
+    .loading-content p { font-size: 0.82rem; }
 }
